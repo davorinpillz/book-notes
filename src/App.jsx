@@ -4,24 +4,33 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Book from './Book.jsx'
 import Notes from './Notes.jsx'
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 function App() {
   const apiKey = import.meta.env.VITE_API_KEY
-  const [count, setCount] = useState(0)
+  const [isbn, setIsbn] = useState('')
   const getBookDetails = async(apiKey) => {
   const response = await fetch(
-    `https://www.googleapis.com/books/v1/volumes?q=${9781796433401}=isbn&key=${apiKey}`
+    `http://openlibrary.org/api/volumes/brief/isbn/${9781526620293}.json`
   )
-  const data = await response.json()
-  console.log(data)
+  const bookInfo = await response.json()
+  console.log(bookInfo)
 }
 getBookDetails()
   return (
-    <>
-      <h4>Book Notes</h4>
-      <Book />
+    <Stack>
+      <Book bookInfo={bookInfo}/>
+      <TextField
+                id="isbn-search" 
+                label="Enter ISBN" 
+                type="search" 
+                onChange={e=>setIsbn(e.target.value)}
+              />
+              <br></br>
       <Notes />
-    </>
+    </Stack>
   )
 }
 
