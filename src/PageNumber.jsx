@@ -18,7 +18,9 @@ function PageNumber({ pageNumber, setPageNumber, showPageNumberInput, setShowPag
     document.getElementById('pagenumber-input').value=""
     setShowPageNumberInput(!showPageNumberInput)
   }
- 
+  //id="isbn-search" 
+ // label="Enter ISBN" 
+  //type="search" 
   return (
     <>
       <Stack spacing={2}>
@@ -26,7 +28,7 @@ function PageNumber({ pageNumber, setPageNumber, showPageNumberInput, setShowPag
             style={{fontStyle: 'Normal', marginTop: 13, marginBottom: 0}}
           id="pagenumber-input"
           label="Enter Page Number"
-          multiline
+          type="search"
           rows={4}
           defaultValue=""
           onChange={e=>setPageNumber(e.target.value)}

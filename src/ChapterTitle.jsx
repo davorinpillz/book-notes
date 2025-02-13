@@ -25,8 +25,8 @@ function ChapterTitle({ chapterTitle, setChapterTitle, showChapterTitleInput, se
           <TextField
             style={{fontStyle: 'Normal', marginTop: 13, marginBottom: 0}}
           id="chaptertitle-input"
-          label="Enter Page Number"
-          multiline
+          label="Enter Chapter Title"
+          type="search"
           rows={4}
           defaultValue=""
           onChange={e=>setChapterTitle(e.target.value)}

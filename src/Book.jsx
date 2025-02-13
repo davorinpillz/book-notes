@@ -5,10 +5,10 @@ import './App.css'
 
 function Book( {bookInfo} ) {
   const [count, setCount] = useState(0)
-
+  console.log(bookInfo)
   return (
     <>
-      <p>Book Card</p>
+      <p>{bookInfo.items[0].volumeInfo.title}</p>
     </>
   )
 }

@@ -10,7 +10,6 @@ import NoteCard from './NoteCard.jsx'
 function Notes() {
   const [note, setNote] = useState('')
   const [notes, setNotes] = useState([])
-  console.log(notes)
   return (
     <Stack 
       spacing={2}
