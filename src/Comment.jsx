@@ -2,12 +2,26 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import Divider from '@mui/material/Divider';
 
-function Comment( {comment, index} ) {
+function Comment( {comments} ) {
 
   return (
     <>
-      <p>{comment}</p>
+      <Divider 
+        style={{marginTop: 15, color: "#fafaf7" }}
+      />
+      {comments.map((comment) => {
+        return (
+          <p
+          style={{ marginBottom: 0, fontStyle: 'normal', fontSize: 16}}
+
+          >{comment}
+          <Divider
+            style={{marginTop: 15}}
+          /></p>
+        )
+      })}
     </>
   )
 }

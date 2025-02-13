@@ -13,7 +13,8 @@ function Notes() {
   console.log(notes)
   return (
     <Stack 
-      spacing={2}>
+      spacing={2}
+      style={{width: 'auto'}}>
         <TextField
           id="note"
           label="Enter Text"

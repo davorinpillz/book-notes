@@ -7,30 +7,29 @@ import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Comment from './Comment.jsx'
 
-function AddComments({ showCommentInput, setShowCommentInput, comment, setComment, comments, setComments }) {
+function ChapterTitle({ chapterTitle, setChapterTitle, showChapterTitleInput, setShowChapterTitleInput }) {
 
   //const [comment, setComment] = useState('')
   //const [comments, setComments] = useState([])
 
-  function storeCommentAndHideInput() {
-    setComments([...comments, comment])
-    document.getElementById('comment-input').value=""
-    setShowCommentInput(!showCommentInput)
+  function storeTitleAndHideInput() {
+    setChapterTitle(chapterTitle)
+    document.getElementById('chaptertitle-input').value=""
+    setShowChapterTitleInput(!showChapterTitleInput)
   }
-  console.log(comments)
+ 
   return (
     <>
       <Stack spacing={2}>
           <TextField
-            style={{marginTop: 13, marginBottom: 0}}
-          id="comment-input"
-          label="Enter Comment"
+            style={{fontStyle: 'Normal', marginTop: 13, marginBottom: 0}}
+          id="chaptertitle-input"
+          label="Enter Page Number"
           multiline
           rows={4}
           defaultValue=""
-          onChange={e=>setComment(e.target.value)}
+          onChange={e=>setChapterTitle(e.target.value)}
         />
         <Button
         style={{backgroundColor: '#E3D026',
@@ -38,13 +37,13 @@ function AddComments({ showCommentInput, setShowCommentInput, comment, setCommen
         }}
         variant="contained" 
         onClick={()=>{
-          storeCommentAndHideInput()
+          storeTitleAndHideInput()
         }}>
-        add comment
+        add chapter title
         </Button>
       </Stack>
     </>
   )
 }
 
-export default AddComments
+export default ChapterTitle

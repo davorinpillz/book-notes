@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Comment from './Comment.jsx'
 
-function AddComments({ showCommentInput, setShowCommentInput, comment, setComment, comments, setComments }) {
+function AddComments({ showCommentInput, setShowCommentInput, comment, setComment, comments, setComments, chapterTitle, setChapterTitle, pageNumber, setPageNumber, showPageNumberInput, setShowPageNumberInput, showChapterTitleInput, setShowChapterTitleInput }) {
 
   //const [comment, setComment] = useState('')
   //const [comments, setComments] = useState([])
