@@ -2,7 +2,7 @@
 const express = require('express')
 
 // Import books-controller
-const booksRoutes = require('./../controllers/books-controller.js')
+const booksRoutes = require('./../controllers/books-controller.cjs')
 
 // Create router
 const router = express.Router()
@@ -11,6 +11,7 @@ const router = express.Router()
 // In server.js, books route is specified as '/books'
 // this means that '/all' translates to '/books/all'
 router.get('/all', booksRoutes.booksAll)
+router.get('/', booksRoutes.test)
 
 // Add route for POST request to create new book
 // In server.js, books route is specified as '/books'

@@ -14,19 +14,21 @@ import NotInterestedIcon from '@mui/icons-material/NotInterested';
 import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import Shelf from './Shelf.jsx'
+import axios from 'axios'
 
 function App() {
   const apiKey = import.meta.env.VITE_API_KEY
   const [isbn, setIsbn] = useState('')
-  const [bookInfo, setBookInfo] = useState({})
+  const [bookData, setBookData] = useState({})
+  const [addBook, setAddBook] = useState({})
   const [viewShelf, setViewShelf] = useState(false)
   const getBookDetails = async(apiKey) => {
   const response = await fetch(
     `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}&key=AIzaSyB3gJ000xrR9_kYY7Dv7I7Vk6uU7mkOdyE`
   )
-  const bookInfo = await response.json()
-  setBookInfo(bookInfo)
-  console.log(bookInfo)
+  const bookData = await response.json()
+  setBookData(bookData)
+  console.log(bookData)
 }
 
 function searchIsbn(e) {
@@ -35,26 +37,43 @@ function searchIsbn(e) {
   document.getElementById('isbn-search').value=""
 }
 
-function displayList() {
+function displayTable() {
   setViewShelf(!viewShelf)
 }
 
+
 function addToCollection() {
   console.log("clicked")
+  setAddBook({
+    author: bookData.items[0].volumeInfo.authors[0],
+    title: bookData.items[0].volumeInfo.title,
+    
+
+    
+  })
+  axios.post(`http://localhost:4001/books/create`, addBook).then((res)=> {
+    console.log(res)
+})
+
+}
+
+function cancel() {
+  setBookData('')
 }
 
   return (
-    <Stack>
+    <Stack
+    style={{display: 'flex', minWidth: '300px'}}>
       {viewShelf ? <Shelf /> : <></>}
-      {bookInfo.totalItems > 0 ?
+      {bookData.totalItems > 0 ?
       <Stack>
         <Paper 
                 style={{ padding: 12, marginBottom: 20}}
                 spacing={2}
                 >
-      <Typography variant="h6">{bookInfo.items[0].volumeInfo.title}</Typography>
-      <Typography variant="subtitle2">{bookInfo.items[0].volumeInfo.subtitle}</Typography>
-      <Typography variant="subtitle1">{bookInfo.items[0].volumeInfo.authors}</Typography>
+      <Typography variant="h6">{bookData.items[0].volumeInfo.title}</Typography>
+      <Typography variant="subtitle2">{bookData.items[0].volumeInfo.subtitle}</Typography>
+      <Typography variant="subtitle1">{bookData.items[0].volumeInfo.authors}</Typography>
       <Divider 
         style={{marginBottom: 5, color: "#fafaf7", marginTop: 10 }}
         />
@@ -73,6 +92,7 @@ function addToCollection() {
 
         <NotInterestedIcon
                                         style={{backgroundColor: 'white', color: 'gray', margin: '3px'}}
+                                        onClick={cancel}
 />
 </Tooltip>
         </Stack>
@@ -100,10 +120,9 @@ function addToCollection() {
           color: '#242105', marginBottom: 15, marginTop: 5
         }}
         variant="contained" 
-        onClick={displayList}>
+        onClick={displayTable}>
         view collection
         </Button>
-     <Notes />
     </Stack>
   )
 }

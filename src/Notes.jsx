@@ -13,7 +13,7 @@ function Notes() {
   return (
     <Stack 
       spacing={2}
-      style={{width: 'auto'}}>
+      style={{maxWidth: 'auto'}}>
         <TextField
           id="note"
           label="Enter Text"

@@ -29,7 +29,8 @@ const [pageNumber, setPageNumber] = useState('')
 console.log(pageNumber)
     return (
         <Stack 
-            spacing={2}>
+            spacing={2}
+            style={{width: "100%"}}>
             <Paper 
                 style={{ padding: 12}}
                 spacing={2}

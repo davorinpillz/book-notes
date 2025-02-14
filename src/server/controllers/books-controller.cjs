@@ -1,6 +1,10 @@
 // Import database
-const knex = require('./../db')
+const knex = require('../db.cjs')
+exports.test = async (req, res) => {
 
+      // Send a error message in response
+      res.json({ message: `Server works` })
+}
 // Retrieve all books
 exports.booksAll = async (req, res) => {
   // Get all books from database
@@ -24,7 +28,6 @@ exports.booksCreate = async (req, res) => {
     .insert({ // insert new record, a book
       'author': req.body.author,
       'title': req.body.title,
-      'pubDate': req.body.pubDate,
     })
     .then(() => {
       // Send a success message in response

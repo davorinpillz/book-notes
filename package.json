@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -17,13 +18,16 @@
     "@mui/system": "^6.4.3",
     "axios": "^1.7.9",
     "body-parser": "^1.20.3",
+    "chance": "^1.1.12",
     "compression": "^1.8.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "helmet": "^8.0.0",
     "knex": "^3.1.0",
+    "nodemon": "^3.1.9",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-virtuoso": "^4.12.5",
     "react-window": "^1.8.11",
     "sqlite3": "^5.1.7"
   },

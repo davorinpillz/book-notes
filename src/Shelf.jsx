@@ -1,78 +1,111 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { FixedSizeList } from 'react-window';
+import { TableVirtuoso } from 'react-virtuoso';
+import Chance from 'chance';
+import axios from 'axios'
 
+const chance = new Chance(42);
+
+
+
+const columns = [
+  {
+    width: 100,
+    label: 'Title',
+    dataKey: 'title',
+  },
+  {
+    width: 100,
+    label: 'Author',
+    dataKey: 'author',
+  }
+
+
+];
+
+
+const VirtuosoTableComponents = {
+  Scroller: React.forwardRef((props, ref) => (
+    <TableContainer component={Paper} {...props} ref={ref} />
+  )),
+  Table: (props) => (
+    <Table {...props} sx={{ borderCollapse: 'separate', tableLayout: 'fixed' }} />
+  ),
+  TableHead: React.forwardRef((props, ref) => <TableHead {...props} ref={ref} />),
+  TableRow,
+  TableBody: React.forwardRef((props, ref) => <TableBody {...props} ref={ref} />),
+};
+
+function fixedHeaderContent() {
+  return (
+    <TableRow>
+      {columns.map((column) => (
+        <TableCell
+          key={column.dataKey}
+          variant="head"
+          align={column.numeric || false ? 'right' : 'left'}
+          style={{ width: column.width }}
+          sx={{ backgroundColor: 'background.paper' }}
+        >
+          {column.label}
+        </TableCell>
+      ))}
+    </TableRow>
+  );
+}
+
+function rowContent(_index, row) {
+  return (
+    <React.Fragment>
+      {columns.map((column) => (
+        <TableCell
+          key={column.dataKey}
+          align={column.numeric || false ? 'right' : 'left'}
+        >
+          {row[column.dataKey]}
+        </TableCell>
+      ))}
+    </React.Fragment>
+  );
+}
 
 
 function Shelf() {
+  const [books, setBooks] = useState({})
+useEffect(() => {
+  const getBooks = async () => {
+  try {
+    const response = await axios.get('http://localhost:4001/books/all')
+    const result = await response
+    setBooks(result.data.flat())
+  } catch(error) {
+    console.log('Error:', error)
+  }
+};
+getBooks();}, [])
+
+
   return (
-    <Paper style={{ padding: 12, marginBottom: 20}}
+    <Paper style={{ height: 400, width: '100%', marginBottom: 20 }}
     spacing={2}>
-    <List style={{ padding: 12}}
-    spacing={2}>
-      <ListItem alignItems="flex-start">
-        <ListItemText
-          primary="Brunch this weekend?"
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                sx={{ color: 'text.primary', display: 'inline' }}
-              >
-                Ali Connors
-              </Typography>
-              {" — I'll be in your neighborhood doing errands this…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem alignItems="flex-start">
-        <ListItemText
-          primary="Summer BBQ"
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                sx={{ color: 'text.primary', display: 'inline' }}
-              >
-                to Scott, Alex, Jennifer
-              </Typography>
-              {" — Wish I could come, but I'm out of town this…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem alignItems="flex-start">
-        <ListItemText
-          primary="Oui Oui"
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                sx={{ color: 'text.primary', display: 'inline' }}
-              >
-                Sandra Adams
-              </Typography>
-              {' — Do you have Paris recommendations? Have you ever…'}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-    </List>
+          <TableVirtuoso
+         data={books} 
+        components={VirtuosoTableComponents}
+        fixedHeaderContent={fixedHeaderContent}
+        itemContent={rowContent}
+      />
     </Paper>
   )
 }
