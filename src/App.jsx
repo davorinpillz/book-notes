@@ -20,8 +20,9 @@ function App() {
   const apiKey = import.meta.env.VITE_API_KEY
   const [isbn, setIsbn] = useState('')
   const [bookData, setBookData] = useState({})
-  const [addBook, setAddBook] = useState({})
+  const [shelfBook, setShelfBook] = useState([])
   const [viewShelf, setViewShelf] = useState(false)
+  const [bookSelected, setBookSelected] = useState(false)
   const getBookDetails = async(apiKey) => {
   const response = await fetch(
     `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}&key=AIzaSyB3gJ000xrR9_kYY7Dv7I7Vk6uU7mkOdyE`
@@ -34,26 +35,32 @@ function App() {
 function searchIsbn(e) {
   setIsbn(e.target.value)
   getBookDetails()
+  {viewShelf ? setViewShelf(!viewShelf) : <></>}
   document.getElementById('isbn-search').value=""
 }
 
 function displayTable() {
+  if (bookSelected) {
+    setBookSelected(!bookSelected)
+  }
   setViewShelf(!viewShelf)
 }
-
-
-function addToCollection() {
-  console.log("clicked")
-  setAddBook({
-    author: bookData.items[0].volumeInfo.authors[0],
-    title: bookData.items[0].volumeInfo.title,
-    
-
-    
-  })
-  axios.post(`http://localhost:4001/books/create`, addBook).then((res)=> {
-    console.log(res)
-})
+let addedBook = {}
+const [addBook, setAddBook] = useState({})
+const addToCollection = async(event) => {
+  event.preventDefault()
+  try {
+    const response = await axios.post("http://localhost:4001/books/create", {
+      author: bookData.items[0].volumeInfo.authors[0],
+      title: bookData.items[0].volumeInfo.title,
+    })
+    addedBook = response.data
+    console.log(response.data)
+  } catch(error) {
+    console.error("error posting data", error)
+  }
+  setBookData('')
+  window.alert("Book added to collection")
 
 }
 
@@ -63,8 +70,11 @@ function cancel() {
 
   return (
     <Stack
-    style={{display: 'flex', minWidth: '300px'}}>
-      {viewShelf ? <Shelf /> : <></>}
+    style={{display: 'flex', minWidth: '375px'}}>
+      
+      {bookSelected ? <Book shelfBook={shelfBook} displayTable={displayTable} />: <></>}
+      {viewShelf ? <Shelf shelfBook={shelfBook} setShelfBook={setShelfBook} setViewShelf={setViewShelf} viewShelf={viewShelf} bookSelected={bookSelected} setBookSelected={setBookSelected}
+      bookData={bookData} setBookData={setBookData}/> : <></>}
       {bookData.totalItems > 0 ?
       <Stack>
         <Paper 
@@ -123,6 +133,8 @@ function cancel() {
         onClick={displayTable}>
         view collection
         </Button>
+        {bookSelected ? <Notes setBookSelected={setBookSelected} />: <></>}
+
     </Stack>
   )
 }
