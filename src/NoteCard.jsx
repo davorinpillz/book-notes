@@ -167,4 +167,4 @@ export default NoteCard
     style={{backgroundColor: 'white', color: 'gray', margin: '3px'}}
     onClick={()=>setShowCommentInput(!showCommentInput)}
 />
-</Tooltip>*/g
+</Tooltip>*/
