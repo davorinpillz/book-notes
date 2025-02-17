@@ -11,7 +11,6 @@ import Tooltip from '@mui/material/Tooltip';
 
 function Book( {bookData, displayTable, shelfBook} ) {
   const [count, setCount] = useState(0)
-  console.log(bookData)
   return (
     <Stack>
     <Paper 
@@ -19,8 +18,11 @@ function Book( {bookData, displayTable, shelfBook} ) {
       spacing={2}
     >
     <Typography variant="h6">{shelfBook.title}</Typography>
-    <Typography variant="subtitle2">{shelfBook.author}</Typography>
-
+    <Typography variant="subtitle2">{shelfBook.subtitle}</Typography>
+    <Typography variant="subtitle1">{shelfBook.author}</Typography>
+    <Typography variant="subtitle2">{shelfBook.publishedDate}</Typography>
+    <Typography variant="subtitle2">{shelfBook.category}</Typography>
+    <Typography variant="subtitle2">{shelfBook.isbn}</Typography>
     <Divider 
       style={{marginBottom: 5, color: "#fafaf7", marginTop: 10 }}
     />

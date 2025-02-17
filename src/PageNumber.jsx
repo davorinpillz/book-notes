@@ -7,16 +7,34 @@ import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-
-function PageNumber({ pageNumber, setPageNumber, showPageNumberInput, setShowPageNumberInput }) {
+import axios from 'axios'
+function PageNumber({ showPageNumberInput, setShowPageNumberInput, index, notes, setPageNumber }) {
 
   //const [comment, setComment] = useState('')
   //const [comments, setComments] = useState([])
+  const [noteId, setNoteId] = useState('')
+  const [number, setNumber] =  useState('')
 
   function storePageNumberAndHideInput() {
-    setPageNumber(pageNumber)
+    setNoteId(notes[index].note_id)  
+    setPageNumber(number)
+    savePageNumber()
     document.getElementById('pagenumber-input').value=""
     setShowPageNumberInput(!showPageNumberInput)
+  }
+
+  const savePageNumber = async() => {
+    let noteId = notes[index].note_id
+    console.log(noteId, number)
+    try {
+      const response = await axios.put(`http://localhost:4001/books/addpagenumber`, {
+        pageNumber: number,
+        noteId: noteId,
+      })
+      console.log(response.data)
+    } catch(error) {
+      console.error("error posting note", error)
+    }
   }
   //id="isbn-search" 
  // label="Enter ISBN" 
@@ -31,7 +49,7 @@ function PageNumber({ pageNumber, setPageNumber, showPageNumberInput, setShowPag
           type="search"
           rows={4}
           defaultValue=""
-          onChange={e=>setPageNumber(e.target.value)}
+          onChange={e=>setNumber(e.target.value)}
         />
         <Button
         style={{backgroundColor: '#E3D026',

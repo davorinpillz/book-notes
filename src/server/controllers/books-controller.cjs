@@ -21,6 +21,35 @@ exports.booksAll = async (req, res) => {
     })
 }
 
+exports.bookNotes = async (req, res) => {
+  //console.log(req.params.isbn)
+  await knex
+    .select('*')
+    .from('notes')
+    .where('book_id', req.params.isbn)
+    .then(bookNotes => {
+      
+      res.json(bookNotes)
+    })
+    .catch(err => {
+      res.json({message: `Failed to retrieve notes, ${err}`})
+    })
+}
+
+exports.bookComments = async (req, res) => {
+  console.log(req.body.note_id)
+  await knex 
+    .select('*')
+    .from('comments')
+    .where('note_id', req.params.noteId)
+    .then(bookComments => {
+      res.json(bookComments)
+    })
+    .catch(err => {
+      res.json({message: `Failed to retrieve comments, ${err}`})
+    })
+}
+
 // Create new book
 exports.booksCreate = async (req, res) => {
   // Add new book to database
@@ -28,6 +57,10 @@ exports.booksCreate = async (req, res) => {
     .insert({ // insert new record, a book
       'author': req.body.author,
       'title': req.body.title,
+      'subtitle': req.body.subtitle,
+      'category': req.body.category,
+      'publishedDate': req.body.publishedDate,
+      'isbn': req.body.isbn,
     })
     .then(() => {
       // Send a success message in response
@@ -38,6 +71,76 @@ exports.booksCreate = async (req, res) => {
       res.json({ message: `There was an error creating ${req.body.title} book: ${err}` })
     })
 }
+// Create new note
+exports.notesCreate = async (req, res) => {
+  // Add new book to database
+  knex('notes')
+    .insert({ // insert new record, a book
+      'book_id': req.body.book_id,
+      'note': req.body.note,
+    })
+    .then(() => {
+      // Send a success message in response
+      res.json({ message: `${req.body.note} for book \'${req.body.book_id}\' created.` })
+    })
+    .catch(err => {
+      // Send a error message in response
+      res.json({ message: `There was an error creating ${req.body.note} book: ${err}` })
+    })
+}
+
+//create new comment
+exports.commentsCreate = async (req, res) => {
+  knex('comments')
+    .insert({
+      'note_id': req.body.noteId,
+      'comment': req.body.comment,
+      'time_created': req.body.time_created,
+      'book_id': req.body.bookId,
+    })
+    .then(() => {
+      // Send a success message in response
+      res.json({ message: `${req.body.comment} for note \'${req.body.note_id}\' created.` })
+    })
+    .catch(err => {
+      // Send a error message in response
+      res.json({ message: `There was an error creating ${req.body.comment} book: ${err}` })
+    })
+}
+
+
+//update note
+exports.noteTitleUpdate = async (req, res) => {
+  console.log(req.body.title, req.body.noteId)
+  knex('notes')
+    .update({chapter_title: req.body.title})
+    .where('note_id', req.body.noteId)
+    .then(bookNotes => {
+      
+      res.json(bookNotes)
+    })
+    .catch(err => {
+      res.json({message: `Failed to update note, ${err}`})
+    })
+}
+
+exports.pageNumberUpdate = async (req, res) => {
+  console.log(req.body.pageNumber, req.body.noteId)
+  knex('notes')
+    .update({page_number: req.body.pageNumber})
+    .where('note_id', req.body.noteId)
+    .then(bookNotes => {
+      res.json(bookNotes)
+    })
+    .catch(err => {
+      res.json({message: `Failed to update note, ${err}`})
+    })
+}
+
+//Add new comment 
+
+
+
 
 // Remove specific book
 exports.booksDelete = async (req, res) => {

@@ -16,7 +16,7 @@ const columns = [
 
 const paginationModel = { page: 0, pageSize: 5 };
 
-function Shelf({bookSelected, setBookSelected, viewShelf, setViewShelf, shelfBook, setShelfBook}) {
+function Shelf({bookSelected, setBookSelected, viewShelf, setViewShelf, shelfBook, setShelfBook, shelfBookNotes, setShelfBookNotes}) {
   const [rows, setRows] = useState([])
   const [message, setMessage] = React.useState('');
 
@@ -32,20 +32,19 @@ useEffect(() => {
   }
 };
 getBooks();}, [])
+
 const handleRowClick = (params) => {
   setMessage(`Movie "${params.row.title}" clicked`);
   setBookSelected(!bookSelected)
   setViewShelf(!viewShelf)
   setShelfBook(params.row)
 };
-console.log(rows)
   return (
     <Paper
-      sx={{ width: '100%', height: '360px', width: '375px', bgcolor: 'background.paper', marginBottom: 2.5, fontSize: 10 }}
+      sx={{ width: '100%', height: '369px', width: '379x', bgcolor: 'background.paper', marginBottom: 2.5, fontSize: 10 }}
     > 
       <DataGrid
         onRowClick={handleRowClick}
-        
         rows={rows}
         columns={columns}
         initialState={{ pagination: { paginationModel } }}

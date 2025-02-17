@@ -25,7 +25,11 @@ knex.schema
       return knex.schema.createTable('books', (table)  => {
         table.increments('id').primary()
         table.string('title')
+        table.string('subtitle')
         table.string('author')
+        table.string('category')
+        table.string('publishedDate')
+        table.string('isbn')
       })
       .then(() => {
         // Log success message
@@ -44,7 +48,67 @@ knex.schema
     console.error(`There was an error setting up the database: ${error}`)
   })
 
-  
+knex.schema
+  .hasTable('notes')
+    .then((exists) => {
+      if (!exists) {
+        return knex.schema.createTable('notes', (table)  => {
+          table.increments('id').primary()
+          table.integer('book_id')
+          table.foreign('book_id').references('Books.isbn_in_books')
+          table.uuid('note_id').defaultTo(knex.fn.uuid())
+          table.foreign('note_id').references('Notes.id_in_notes')
+          table.string('chapter_title')
+          table.string('note')
+          table.string('page_number')
+        })
+        .then(() => {
+          // Log success message
+          console.log('Table \'Books\' created')
+        })
+        .catch((error) => {
+          console.error(`There was an error creating table: ${error}`)
+        })
+      }
+    })
+    .then(() => {
+      // Log success message
+      console.log('done')
+    })
+    .catch((error) => {
+      console.error(`There was an error setting up the database: ${error}`)
+    })
+
+knex.schema
+    .hasTable('comments')
+      .then((exists) => {
+        if (!exists) {
+          return knex.schema.createTable('comments', (table) => {
+            table.increments('id').primary()
+            table.uuid('comment_id').defaultTo(knex.fn.uuid())
+            table.string('note_id')
+            table.foreign('note_id').references('Notes.note_id_in_notes')
+            table.string('book_id')
+            table.foreign('book_id').references('Books.isbn_in_books')
+            table.string('comment')
+            table.datetime('time_created')
+            
+          })
+          .then(() => {
+            console.log('Table \'Comments\' created')
+          })
+          .catch((error) => {
+            console.error(`There was an error creating table: ${error}`)
+          })
+        }
+      })
+      .then(() => {
+        // Log success message
+        console.log('done')
+      })
+      .catch((error) => {
+        console.error(`There was an error setting up the database: ${error}`)
+      })
 
   
 
