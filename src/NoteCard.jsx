@@ -147,13 +147,7 @@ useEffect(() => {
                         onClick={()=>setCollapseComment(!collapseComment)}
                     />
                 </Tooltip>}
-                    <Tooltip title="Link note" arrow>
-                            <LinkIcon
-                                id="Link note"
-                                style={{backgroundColor: 'white', color: 'gray', margin: '3px'}}
-                                onClick={()=>setShowCommentInput(!showCommentInput)}
-                            />
-                        </Tooltip>
+
 
                     </Stack>
                 </Stack>
@@ -166,3 +160,11 @@ export default NoteCard
 
                    // <Comment comments={comments}/>
                     
+//
+/*<Tooltip title="Link note" arrow>
+<LinkIcon
+    id="Link note"
+    style={{backgroundColor: 'white', color: 'gray', margin: '3px'}}
+    onClick={()=>setShowCommentInput(!showCommentInput)}
+/>
+</Tooltip>*/g
