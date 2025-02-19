@@ -4,23 +4,24 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Divider from '@mui/material/Divider';
 import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
-function Comment( {comments, setCommentUpdated, date} ) {
-  let commentsArray = []
-  for (let i = 0; i < comments.length; i++) {
-    commentsArray.push(comments[i].comment)
-  }
+import Typography from '@mui/material/Typography';
+
+function Comment( {comments, setCommentUpdated, date, noteId} ) {
 
   return (
     <>
       <Divider 
         style={{marginTop: 15, color: "#fafaf7" }}
       />
-      {commentsArray.map((comment) => {
+      {comments.map((comment) => {
         return (
           <p
           style={{ marginBottom: 0, fontStyle: 'normal', fontSize: 16}}
 
-          ><p style={{ marginBottom: 0, fontStyle: 'normal', fontSize: 8, color: "gray"}}></p>{comment}
+          >
+      <Typography style={{ marginBottom: 0, fontStyle: 'normal', fontSize: 8, color: "gray"}}
+      variant="subtitle1">{comment.time_created}</Typography>
+      <p style={{ marginBottom: 0, fontStyle: 'normal', fontSize: 8, color: "gray"}}></p>{comment.comment}
           <Divider
             style={{marginTop: 15}}
           /></p>

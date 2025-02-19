@@ -35,7 +35,7 @@ function AddComments({ index, notes, showCommentInput, setShowCommentInput, comm
         comment: text,
         noteId: noteId,
         bookId: bookId,
-        time_created: new Date()
+        time_created: new Date().toLocaleString()
       })
       console.log(response.data)
     } catch(error) {
