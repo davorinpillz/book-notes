@@ -20,6 +20,7 @@ import PageNumber from './PageNumber.jsx'
 import ChapterTitle from './ChapterTitle.jsx'
 import axios from 'axios'
 import { useReferencesStore } from './References.js'
+import { WindowSharp } from '@mui/icons-material';
 
 function NoteCard({ note, index, notes, isbn, addedNote}) {
 
@@ -92,7 +93,9 @@ useEffect(() => {
           } catch(error) {
             console.error("error posting note", error)
           }
+
     }
+
     postRef()
 }, [refs[2]])
 
@@ -204,7 +207,7 @@ useEffect(() => {
         book_id: notes[index].book_id,
         chapter_title: notes[index].chapter_title,
         page_number: notes[index].page_number,});
-
+        window.alert("Cross-references saved")
 
    }}
 />

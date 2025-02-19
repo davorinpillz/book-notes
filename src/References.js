@@ -25,7 +25,12 @@ export const useReferencesStore = create((set) => ({
     },
     deleteReference: () => {
         set((state) => {
-            referenes: []
+            return {references: [{
+                note_id: '',
+            book_id: '',
+            chapter_title: '',
+            page_number: '',
+            }]}
         })
     }
 
