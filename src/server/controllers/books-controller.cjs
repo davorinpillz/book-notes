@@ -108,6 +108,30 @@ exports.commentsCreate = async (req, res) => {
     })
 }
 
+//create new reference
+exports.crossReferenceCreate = async (req, res) => {
+  knex('cross_references')
+    .insert({
+      'first_note_id': req.body.noteId,
+      'first_book_id': req.body.comment,
+      'first_book_chapter': req.body.time_created,
+      'first_book_page_number': req.body.bookId,
+      'second_note_id': req.body.noteId,
+      'second_book_id': req.body.comment,
+      'second_book_chapter': req.body.time_created,
+      'second_book_page_number': req.body.bookId,
+      'comment': req.body.comment,
+      'time_created': req.body.time_created,
+    })
+    .then(() => {
+      // Send a success message in response
+      res.json({ message: `${req.body.comment} for note \'${req.body.note_id}\' created.` })
+    })
+    .catch(err => {
+      // Send a error message in response
+      res.json({ message: `There was an error creating ${req.body.comment} book: ${err}` })
+    })
+}
 
 //update note
 exports.noteTitleUpdate = async (req, res) => {

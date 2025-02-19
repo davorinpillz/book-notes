@@ -31,7 +31,7 @@ function Book( {bookData, displayTable, shelfBook} ) {
     >
       <Tooltip title="Back to collection" arrow>
       <KeyboardReturnIcon 
-        style={{backgroundColor: 'white', color: 'gray', margin: '3px'}}
+        style={{backgroundColor: 'white', color: 'gray', margin: '3px', marginTop: 10}}
         onClick={displayTable}
       />
     </Tooltip>

@@ -21,6 +21,7 @@ router.get('/', booksRoutes.test)
 router.post('/create', booksRoutes.booksCreate)
 router.post('/:isbn/addnote', booksRoutes.notesCreate)
 router.post('/addcomment', booksRoutes.commentsCreate)
+router.post('/crossreference', booksRoutes.crossReferenceCreate)
 
 // Add route for PUT request to delete specific book
 // In server.js, books route is specified as '/books'

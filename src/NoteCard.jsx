@@ -19,6 +19,7 @@ import Comment from './Comment.jsx'
 import PageNumber from './PageNumber.jsx'
 import ChapterTitle from './ChapterTitle.jsx'
 import axios from 'axios'
+import { useReferencesStore } from './References.js'
 
 function NoteCard({ note, index, notes, isbn, addedNote}) {
 
@@ -33,10 +34,34 @@ const [pageNumber, setPageNumber] = useState('')
 const [commentIndex, setCommentIndex] = useState('')
 const [commentUpdated, setCommentUpdated] = useState(false)
 const [collapseComment, setCollapseComment] = useState(false)
+const [selectIndex, setSelectIndex] = useState('')
+const [reference, setReference] = useState([])
+
+const { addFirstReference, addSecondReference } = useReferencesStore()
+console.log(reference)
+//const flag = useReferencesStore((state) => console.log(state.idOneTrue))
+useEffect(() => {
+    const ifRef = () => {
+        if(reference.length === 1 && flag == false) {
+            addFirstReference(reference)
+            console.log(reference)
+        }
+        else if (reference.length === 1 && flag == true) {
+            addSecondReference(reference)
+        }
+        else if (reference.length === 0) {
+            console.log('nothing')
+        }
+  };
+  ifRef();},[reference])
 
 
 
-console.log(comments, commentIndex)
+
+//console.log(selectIndex)
+//console.log(notes)
+//console.log(reference)
+
 let chapterTitles = []
 for (let i = 0; i < notes.length; i++) {
     chapterTitles.push(notes[i].chapter_title)
@@ -85,7 +110,7 @@ useEffect(() => {
                     {note}
                         <div>
                         <p
-                        style={{fontSize: 12, fontStyle: 'Normal'}}>{pageNumbers[index] ? <p>{pageNumbers[index]}</p> : <p>{pageNumber}</p>}</p>
+                        style={{fontSize: 12, fontStyle: 'Normal', marginBottom: -25}}>{pageNumbers[index] ? <p>{pageNumbers[index]}</p> : <p>{pageNumber}</p>}</p>
                         {showPageNumberInput ? <PageNumber pageNumber={pageNumber} setPageNumber={setPageNumber}
                         showPageNumberInput={showPageNumberInput}
                         setShowPageNumberInput={setShowPageNumberInput}
@@ -111,7 +136,7 @@ useEffect(() => {
                     {collapseComment ? <Comment comments={comments} />: <></> }
                     <Stack 
                         direction="row"
-                        style={{marginTop: 0, marginBottom: 0, justifyContent: 'center'}}
+                        style={{marginTop: 10, marginBottom: 0, justifyContent: 'center'}}
                     >
                         <Tooltip title="Add chapter title" arrow>
                             <AutoStoriesIcon 
@@ -147,7 +172,18 @@ useEffect(() => {
                         onClick={()=>setCollapseComment(!collapseComment)}
                     />
                 </Tooltip>}
-
+                <Tooltip title="Link note" arrow>
+<LinkIcon
+    id="Link note"
+    style={{backgroundColor: 'white', color: 'gray', margin: '3px'}}
+   onClick={() => setReference({
+    note_id: notes[index].note_id,
+    book_id: notes[index].book_id,
+    chapter_title: notes[index].chapter_title,
+    page_number: notes[index].page_number,
+   })}
+/>
+</Tooltip>
 
                     </Stack>
                 </Stack>

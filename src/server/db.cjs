@@ -110,6 +110,53 @@ knex.schema
         console.error(`There was an error setting up the database: ${error}`)
       })
 
+knex.schema
+  .hasTable('cross_references')
+    .then((exists) => {
+      if (!exists) {
+        return knex.schema.createTable('cross_references', (table) => {
+          table.increments('id').primary()
+          table.uuid('reference_id').defaultTo(knex.fn.uuid())
+
+          table.string('first_note_id')
+          table.foreign('first_note_id').references('Notes.note_id_in_notes')
+          table.string('first_book_id')
+          table.foreign('first_book_id').references('Books.isbn_in_books')
+
+          table.string('first_book_chapter')
+          table.foreign('first_book_chapter').references('Notes.chapter_title_in_notes')
+          table.string('first_book_page_number')
+          table.foreign('first_book_page_number').references('Notes.page_number_in_notes')
+
+          table.string('second_note_id')
+          table.foreign('second_note_id').references('Notes.note_id_in_notes')
+          table.string('second_book_id')
+          table.foreign('second_book_id').references('Books.isbn_in_books')
+
+          table.string('second_book_chapter')
+          table.foreign('second_book_chapter').references('Notes.chapter_title_in_notes')
+          table.string('second_book_page_number')
+          table.foreign('second_book_page_number').references('Notes.page_number_in_notes')
+
+          table.string('comment')
+          table.datetime('time_created')
+          
+        })
+        .then(() => {
+          console.log('Table \'Cross references\' created')
+        })
+        .catch((error) => {
+          console.error(`There was an error creating table: ${error}`)
+        })
+      }
+    })
+    .then(() => {
+      // Log success message
+      console.log('done')
+    })
+    .catch((error) => {
+      console.error(`There was an error setting up the database: ${error}`)
+    })
   
 
 // Just for debugging purposes:
