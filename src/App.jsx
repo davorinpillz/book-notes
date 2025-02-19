@@ -72,7 +72,6 @@ const addToCollection = async(event) => {
 function cancel() {
   setBookData('')
 }
-console.log(shelfBook)
   return (
     <Stack
     style={{display: 'flex', minWidth: '375px'}}>

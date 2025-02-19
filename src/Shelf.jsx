@@ -41,7 +41,7 @@ const handleRowClick = (params) => {
 };
   return (
     <Paper
-      sx={{ width: '100%', height: '369px', width: '379x', bgcolor: 'background.paper', marginBottom: 2.5, fontSize: 10 }}
+      sx={{ height: '369px', width: '379x', bgcolor: 'background.paper', marginBottom: 2.5, fontSize: 10 }}
     > 
       <DataGrid
         onRowClick={handleRowClick}

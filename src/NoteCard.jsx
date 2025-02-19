@@ -69,29 +69,33 @@ useEffect(() => {
     }
   };
   getComments();},[commentUpdated])
-  console.log(refs.length)
 
+console.log(refs)
 
-const postRef = async(r) => {
-    try {
-        const response = await axios.post(`http://localhost:4001/books/crossreference`, {
-        first_note_id: r[1].note_id,
-      first_book_id: r[1].book_id,
-      first_book_chapter: r[1].chapter_title,
-      first_book_page_number: r[1].page_number,
-      second_note_id: r[2].note_id,
-      second_book_id: r[2].book_id,
-      second_book_chapter: r[2].chapter_title,
-      second_book_page_number: r[2].page_number,
-      comment: '',
-      time_created: new Date().toLocaleString()
+useEffect(() => {
+    const postRef = async() => {
+        try {
+            const response = await axios.post(`http://localhost:4001/books/crossreference`, {
+            first_note_id: refs[1].note_id,
+          first_book_id: refs[1].book_id,
+          first_book_chapter: refs[1].chapter_title,
+          first_book_page_number: refs[1].page_number,
+          second_note_id: refs[2].note_id,
+          second_book_id: refs[2].book_id,
+          second_book_chapter: refs[2].chapter_title,
+          second_book_page_number: refs[2].page_number,
+          comment: '',
+          time_created: new Date().toLocaleString()
+    
+            })
+            console.log(response.data)
+          } catch(error) {
+            console.error("error posting note", error)
+          }
+    }
+    postRef()
+}, [refs[2]])
 
-        })
-        console.log(response.data)
-      } catch(error) {
-        console.error("error posting note", error)
-      }
-}
   
     return (
         <Stack 
@@ -200,8 +204,6 @@ const postRef = async(r) => {
         book_id: notes[index].book_id,
         chapter_title: notes[index].chapter_title,
         page_number: notes[index].page_number,});
-        window.alert("Cross-reference saved")
-        postRef(refs)
 
 
    }}
