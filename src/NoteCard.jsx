@@ -37,7 +37,6 @@ const [collapseComment, setCollapseComment] = useState(false)
 const { addReference, deleteReference } = useReferencesStore()
 //console.log(reference)
 let refs = useReferencesStore((state) => state.references)
-console.log(refs)
 //console.log(selectIndex)
 //console.log(notes)
 //console.log(reference)
@@ -70,9 +69,28 @@ useEffect(() => {
     }
   };
   getComments();},[commentUpdated])
+  console.log(refs.length)
 
-function postRef() {
 
+const postRef = async(r) => {
+    try {
+        const response = await axios.post(`http://localhost:4001/books/crossreference`, {
+        first_note_id: r[1].note_id,
+      first_book_id: r[1].book_id,
+      first_book_chapter: r[1].chapter_title,
+      first_book_page_number: r[1].page_number,
+      second_note_id: r[2].note_id,
+      second_book_id: r[2].book_id,
+      second_book_chapter: r[2].chapter_title,
+      second_book_page_number: r[2].page_number,
+      comment: '',
+      time_created: new Date().toLocaleString()
+
+        })
+        console.log(response.data)
+      } catch(error) {
+        console.error("error posting note", error)
+      }
 }
   
     return (
@@ -83,7 +101,7 @@ function postRef() {
                 style={{ padding: 12}}
                 spacing={2}
                 key={index}>
-                <Stack>    
+                <Stack id={index}>    
                     <div style={{fontStyle: 'oblique', fontSize: 20}}>
                     <div>
                         <p
@@ -96,6 +114,7 @@ function postRef() {
                         /> : <p></p>}
                     </div>
                     {note}
+                    
                         <div>
                         <p
                         style={{fontSize: 12, fontStyle: 'Normal', marginBottom: -25}}>{pageNumbers[index] ? <p>{pageNumbers[index]}</p> : <p>{pageNumber}</p>}</p>
@@ -169,35 +188,27 @@ function postRef() {
     book_id: notes[index].book_id,
     chapter_title: notes[index].chapter_title,
     page_number: notes[index].page_number,});
-        
+    window.alert("Note selected, choose note to reference in different book")
    }}
 />
 </Tooltip> : refs.length == 2 ? <Tooltip title="Link note" arrow>
 <LinkIcon
-    id="Link note"
+    id={index}
     style={{backgroundColor: 'white', color: 'gray', margin: '3px'}}
    onClick={() => {
     addReference({note_id: notes[index].note_id,
         book_id: notes[index].book_id,
         chapter_title: notes[index].chapter_title,
         page_number: notes[index].page_number,});
-        window.alert("Cross-reference added")
+        window.alert("Cross-reference saved")
+        postRef(refs)
+
+
    }}
 />
 </Tooltip>
- : <Tooltip title="Link note" arrow>
- <LinkIcon
-     id="Link note"
-     style={{backgroundColor: 'white', color: 'gray', margin: '3px'}}
-    onClick={() => {
-     addReference({note_id: notes[index].note_id,
-         book_id: notes[index].book_id,
-         chapter_title: notes[index].chapter_title,
-         page_number: notes[index].page_number,});
-         
-    }}
- />
- </Tooltip>}
+ : <></>
+ }
                 
 
                     </Stack>

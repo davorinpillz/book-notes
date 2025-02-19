@@ -110,16 +110,17 @@ exports.commentsCreate = async (req, res) => {
 
 //create new reference
 exports.crossReferenceCreate = async (req, res) => {
+  console.log(req.body)
   knex('cross_references')
     .insert({
-      'first_note_id': req.body.noteId,
-      'first_book_id': req.body.comment,
-      'first_book_chapter': req.body.time_created,
-      'first_book_page_number': req.body.bookId,
-      'second_note_id': req.body.noteId,
-      'second_book_id': req.body.comment,
-      'second_book_chapter': req.body.time_created,
-      'second_book_page_number': req.body.bookId,
+      'first_note_id': req.body.first_note_id,
+      'first_book_id': req.body.first_book_id,
+      'first_book_chapter': req.body.first_book_chapter,
+      'first_book_page_number': req.body.first_book_page_number,
+      'second_note_id': req.body.second_note_id,
+      'second_book_id': req.body.second_book_id,
+      'second_book_chapter': req.body.second_book_chapter,
+      'second_book_page_number': req.body.second_book_page_number,
       'comment': req.body.comment,
       'time_created': req.body.time_created,
     })
