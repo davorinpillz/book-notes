@@ -34,34 +34,18 @@ const [pageNumber, setPageNumber] = useState('')
 const [commentIndex, setCommentIndex] = useState('')
 const [commentUpdated, setCommentUpdated] = useState(false)
 const [collapseComment, setCollapseComment] = useState(false)
-const [selectIndex, setSelectIndex] = useState('')
-const [reference, setReference] = useState([])
-
-const { addFirstReference, addSecondReference } = useReferencesStore()
-console.log(reference)
-//const flag = useReferencesStore((state) => console.log(state.idOneTrue))
-useEffect(() => {
-    const ifRef = () => {
-        if(reference.length === 1 && flag == false) {
-            addFirstReference(reference)
-            console.log(reference)
-        }
-        else if (reference.length === 1 && flag == true) {
-            addSecondReference(reference)
-        }
-        else if (reference.length === 0) {
-            console.log('nothing')
-        }
-  };
-  ifRef();},[reference])
-
-
-
-
+const { addReference, deleteReference } = useReferencesStore()
+//console.log(reference)
+let refs = useReferencesStore((state) => state.references)
+console.log(refs)
 //console.log(selectIndex)
 //console.log(notes)
 //console.log(reference)
-
+/*useEffect(() => {
+    const postRef = async () => {
+        console.log(counter)
+    }
+postRef()}, [])*/
 let chapterTitles = []
 for (let i = 0; i < notes.length; i++) {
     chapterTitles.push(notes[i].chapter_title)
@@ -87,6 +71,10 @@ useEffect(() => {
   };
   getComments();},[commentUpdated])
 
+function postRef() {
+
+}
+  
     return (
         <Stack 
             spacing={2}
@@ -172,18 +160,45 @@ useEffect(() => {
                         onClick={()=>setCollapseComment(!collapseComment)}
                     />
                 </Tooltip>}
-                <Tooltip title="Link note" arrow>
+                {refs.length < 2 ? <Tooltip title="Link note" arrow>
 <LinkIcon
     id="Link note"
     style={{backgroundColor: 'white', color: 'gray', margin: '3px'}}
-   onClick={() => setReference({
-    note_id: notes[index].note_id,
+   onClick={() => {
+    addReference({note_id: notes[index].note_id,
     book_id: notes[index].book_id,
     chapter_title: notes[index].chapter_title,
-    page_number: notes[index].page_number,
-   })}
+    page_number: notes[index].page_number,});
+        
+   }}
+/>
+</Tooltip> : refs.length == 2 ? <Tooltip title="Link note" arrow>
+<LinkIcon
+    id="Link note"
+    style={{backgroundColor: 'white', color: 'gray', margin: '3px'}}
+   onClick={() => {
+    addReference({note_id: notes[index].note_id,
+        book_id: notes[index].book_id,
+        chapter_title: notes[index].chapter_title,
+        page_number: notes[index].page_number,});
+        window.alert("Cross-reference added")
+   }}
 />
 </Tooltip>
+ : <Tooltip title="Link note" arrow>
+ <LinkIcon
+     id="Link note"
+     style={{backgroundColor: 'white', color: 'gray', margin: '3px'}}
+    onClick={() => {
+     addReference({note_id: notes[index].note_id,
+         book_id: notes[index].book_id,
+         chapter_title: notes[index].chapter_title,
+         page_number: notes[index].page_number,});
+         
+    }}
+ />
+ </Tooltip>}
+                
 
                     </Stack>
                 </Stack>
